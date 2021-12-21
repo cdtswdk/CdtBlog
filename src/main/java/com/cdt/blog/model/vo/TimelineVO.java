@@ -20,7 +20,7 @@ public class TimelineVO {
     @Builder
     public static class Item {
         private String id;
-        private String gmtCreate;
+        private String createTime;
         private String title;
     }
 }

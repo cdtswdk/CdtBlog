@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cdt.blog.dao.BlogMapper">
+    <resultMap id="blogMap" type="com.cdt.blog.model.entity.Blog">
+        <id property="id" column="id"/>
+        <result property="content" column="content"/>
+        <result property="title" column="title"/>
+        <result property="firstPicture" column="first_picture"/>
+        <result property="flag" column="flag"/>
+        <result property="views" column="views"/>
+        <result property="appreciation" column="appreciation"/>
+        <result property="description" column="description"/>
+        <result property="commentabled" column="commentabled"/>
+        <result property="published" column="published"/>
+        <result property="recommend" column="recommend"/>
+        <result property="shareStatement" column="share_statement"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="typeId" column="type_id"/>
+        <result property="userId" column="user_id"/>
+        <association property="type" javaType="com.cdt.blog.model.entity.Type"
+                     column="id" select="com.cdt.blog.dao.TypeMapper.findTypeByBlogId"/>
+        <association property="user" javaType="com.cdt.blog.model.entity.User"
+                     column="id" select="com.cdt.blog.dao.UserMapper.findUserByBlogId"/>
+        <collection property="tags" javaType="java.util.ArrayList"
+                    ofType="com.cdt.blog.model.entity.Tag" column="id"
+                    select="com.cdt.blog.dao.TagMapper.findTagByBlogId"/>
+    </resultMap>
+
+    <select id="findById" parameterType="java.lang.Long" resultMap="blogMap">
+        select blog.* from t_blog blog
+        where blog.id = #{id}
+    </select>
+
+    <select id="findAll" resultMap="blogMap">
+        select blog.* from t_blog blog
+        ${ew.customSqlSegment}
+    </select>
+
+    <select id="findBlogByTag" resultMap="blogMap">
+        select blog.* from t_blog blog
+        <where>
+            blog.id in
+            (select blogs_id from t_blog_tags blog_tags
+            where blog_tags.tags_id in
+            (select id from t_tag tag
+            where ${ew.sqlSegment})
+            )
+        </where>
+    </select>
+</mapper>

@@ -2,10 +2,7 @@ package com.cdt.blog.model.vo;
 
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.bean.copier.CopyOptions;
-import com.cdt.blog.model.entity.Blog;
-import com.cdt.blog.model.entity.Tag;
-import com.cdt.blog.model.entity.Type;
-import com.cdt.blog.model.entity.User;
+import com.cdt.blog.model.entity.*;
 import com.cdt.blog.utils.DateTimeUtils;
 import lombok.Data;
 
@@ -29,6 +26,8 @@ public class BlogVO {
     private Integer views;
 
     private List<Tag> tags;
+
+    private List<Comment> comments;
 
     private Long typeId;
 

@@ -1,4 +1,4 @@
-package com.cdt.blog.service;
+package com.cdt.blog.service.impl;
 
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.crypto.digest.MD5;
@@ -7,6 +7,7 @@ import com.cdt.blog.exception.BlogException;
 import com.cdt.blog.model.comm.Results;
 import com.cdt.blog.model.dto.UserDTO;
 import com.cdt.blog.model.enums.UserRoleEnum;
+import com.cdt.blog.service.UserService;
 import com.cdt.blog.utils.JwtUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

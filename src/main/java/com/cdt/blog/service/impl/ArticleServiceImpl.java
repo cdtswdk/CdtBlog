@@ -10,14 +10,13 @@ import com.cdt.blog.model.entity.ArticlePO;
 import com.cdt.blog.model.enums.ErrorInfoEnum;
 import com.cdt.blog.model.vo.ArticleVO;
 import com.cdt.blog.model.vo.PageVO;
-import com.cdt.blog.model.vo.TimelineVO;
 import com.cdt.blog.service.ArticleService;
-import com.cdt.blog.utils.DateTimeUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
@@ -55,7 +54,6 @@ public class ArticleServiceImpl implements ArticleService {
         return id;
     }
 
-    @Transactional(rollbackFor = Exception.class)
     @Override
     public ArticleVO findById(String id) {
         ArticlePO articlePO = this.articleMapper.selectById(id);
@@ -87,25 +85,8 @@ public class ArticleServiceImpl implements ArticleService {
         this.articleMapper.updateById(articlePO);
     }
 
-    @Override
-    public List<TimelineVO> timeline() {
-        List<TimelineVO> res = new ArrayList<>();
-        QueryWrapper<ArticlePO> wrapper = new QueryWrapper<>();
-        wrapper.select("id", "title", "gmt_create");
-        List<Map<String, Object>> maps = this.articleMapper.selectMaps(wrapper);
-        maps.stream().map(m -> TimelineVO.Item.builder()
-                .id(String.valueOf(m.get("id")))
-                .title(String.valueOf(m.get("title")))
-                .gmtCreate(DateTimeUtils.dateToString((Date) m.get("gmt_create")))
-                .build())
-                .collect(Collectors.groupingBy(item -> {
-                    String[] arr = item.getGmtCreate().split("-");
-                    String year = arr[0];
-                    return year;
-                })).forEach((k, v) -> res.add(TimelineVO.builder().year(k).items(v).build()));
-        return res;
-    }
 
+    /*
     @Override
     public TimelineVO timelineNewest() {
         List<TimelineVO> res = new ArrayList<>();
@@ -135,5 +116,5 @@ public class ArticleServiceImpl implements ArticleService {
             return timelineVO;
         }
         return null;
-    }
+    }*/
 }

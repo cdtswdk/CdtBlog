@@ -19,7 +19,7 @@ public class BlogInfoVO {
     private List<String> covers;
     private String avatar;
     private String nickname;
-    private int articleCount;
+    private int blogCount;
     private int totalViews;
 
     public static BlogInfoVO fromBlogSetting(BlogSetting blogSetting) {

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cdt.blog.dao.TypeMapper">
+    <resultMap id="typeMap" type="com.cdt.blog.model.entity.Type">
+        <id property="id" column="id"/>
+        <result property="name" column="name"/>
+    </resultMap>
+    <select id="findTypeByBlogId" resultMap="typeMap">
+        select * from t_type type,t_blog blog where
+        type.id = blog.type_id and blog.id = #{blogId}
+    </select>
+
+    <insert id="saveType" parameterType="com.cdt.blog.model.entity.Type">
+        <selectKey keyProperty="id" resultType="java.lang.Long" order="AFTER">
+            select LAST_INSERT_ID()
+        </selectKey>
+        insert t_type (name)
+        values (#{name})
+    </insert>
+</mapper>

@@ -5,7 +5,6 @@ import com.cdt.blog.model.comm.Results;
 import com.cdt.blog.model.dto.ArticleDTO;
 import com.cdt.blog.model.vo.ArticleVO;
 import com.cdt.blog.model.vo.PageVO;
-import com.cdt.blog.model.vo.TimelineVO;
 import com.cdt.blog.service.impl.ArticleServiceImpl;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
@@ -15,7 +14,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -74,19 +72,5 @@ public class ArticleController {
             @PathVariable String id) {
         this.articleServiceImpl.updateArticle(articleDTO, id);
         return Results.ok("更新成功", MapUtil.of("id", id));
-    }
-
-    @GetMapping("/timeline")
-    @ApiOperation("获取文章时间线")
-    public Results<List<TimelineVO>> getTimeline() {
-        List<TimelineVO> timeline = this.articleServiceImpl.timeline();
-        return Results.ok(timeline);
-    }
-
-    @GetMapping("/timelineNewest")
-    @ApiOperation("获取最新文章时间线")
-    public Results<TimelineVO> getTimelineNewest() {
-        TimelineVO timelineNewest = this.articleServiceImpl.timelineNewest();
-        return Results.ok(timelineNewest);
     }
 }

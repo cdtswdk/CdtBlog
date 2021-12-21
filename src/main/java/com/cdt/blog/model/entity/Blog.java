@@ -1,13 +1,16 @@
 package com.cdt.blog.model.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * <p>
@@ -72,11 +75,17 @@ public class Blog implements Serializable {
     // 用户
     private Long userId;
 
-    /*// 标签
-    @Transient
+    @TableField(exist = false)
+    private Type type;
+
+    @TableField(exist = false)
+    private User user;
+
+    // 标签
+    @TableField(exist = false)
     private List<Tag> tags = new ArrayList<>();
 
     // 评论
-    @Transient
-    private List<Comment> comments = new ArrayList<>();*/
+    @TableField(exist = false)
+    private List<Comment> comments = new ArrayList<>();
 }

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cdt.blog.dao.TagMapper">
+    <resultMap id="tagsMap" type="com.cdt.blog.model.entity.Tag">
+        <id property="id" column="id"/>
+        <result property="name" column="name"/>
+    </resultMap>
+    <select id="findTagByBlogId" resultMap="tagsMap">
+        select * from t_tag tag,t_blog_tags blog_tags where
+        blog_tags.blogs_id = #{blogId} and blog_tags.tags_id = tag.id
+    </select>
+
+    <insert id="saveTag" parameterType="com.cdt.blog.model.entity.Tag">
+        <selectKey keyProperty="id" resultType="java.lang.Long" order="AFTER">
+            select LAST_INSERT_ID()
+        </selectKey>
+        insert t_tag (name)
+        values (#{name})
+    </insert>
+</mapper>

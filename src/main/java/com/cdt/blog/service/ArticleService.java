@@ -3,9 +3,6 @@ package com.cdt.blog.service;
 import com.cdt.blog.model.dto.ArticleDTO;
 import com.cdt.blog.model.vo.ArticleVO;
 import com.cdt.blog.model.vo.PageVO;
-import com.cdt.blog.model.vo.TimelineVO;
-
-import java.util.List;
 
 /**
  * @Auther: chendongtao
@@ -23,7 +20,7 @@ public interface ArticleService {
 
     void updateArticle(ArticleDTO articleDTO, String id);
 
-    List<TimelineVO> timeline();
+    //List<TimelineVO> timeline();
 
-    TimelineVO timelineNewest();
+    //TimelineVO timelineNewest();
 }

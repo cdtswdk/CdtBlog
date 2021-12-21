@@ -13,3 +13,6 @@ logging:
   file:
     name: log/cdtblog.log
     path: log/
+mybatis-plus:
+  configuration:
+    aggressive-lazy-loading: true

@@ -3,6 +3,7 @@ package com.cdt.blog.dao;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.cdt.blog.model.entity.User;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 /**
  * <p>
@@ -14,5 +15,5 @@ import org.apache.ibatis.annotations.Mapper;
  */
 @Mapper
 public interface UserMapper extends BaseMapper<User> {
-
+    User findUserByBlogId(@Param("blogId") Long blogId);
 }

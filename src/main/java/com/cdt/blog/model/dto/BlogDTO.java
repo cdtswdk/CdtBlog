@@ -1,11 +1,10 @@
 package com.cdt.blog.model.dto;
 
+import cn.hutool.core.bean.BeanUtil;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
-import com.cdt.blog.model.entity.Comment;
-import com.cdt.blog.model.entity.Tag;
-import com.cdt.blog.model.entity.Type;
-import com.cdt.blog.model.entity.User;
+import com.cdt.blog.model.entity.*;
+import com.cdt.blog.utils.DateTimeUtils;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -75,11 +74,34 @@ public class BlogDTO implements Serializable {
 
     private Integer views;
 
+    private String typeName;
+
     private Type type;
 
     private User user;
 
-    private List<Tag> tags = new ArrayList<>();
+    //    private List<Tag> tags = new ArrayList<>();
+    private List<Tag> tags;
 
     private List<Comment> comments = new ArrayList<>();
+
+    private List<Tag> newTags;
+
+    public Blog toBlogPO(boolean isUpdate) {
+        Blog blog = new BlogDTO.Converter().convertToPO(this);
+        blog.setViews(isUpdate ? null : 0);
+        blog.setCreateTime(isUpdate ? null : blog.getUpdateTime());
+        return blog;
+    }
+
+    private static class Converter implements IConverter<BlogDTO, Blog> {
+
+        @Override
+        public Blog convertToPO(BlogDTO blogDTO) {
+            Blog blog = new Blog();
+            BeanUtil.copyProperties(blogDTO, blog);
+            blog.setUpdateTime(DateTimeUtils.getNowDate());
+            return blog;
+        }
+    }
 }

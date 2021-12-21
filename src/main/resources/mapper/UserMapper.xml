@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cdt.blog.dao.UserMapper">
+    <resultMap id="userMap" type="com.cdt.blog.model.entity.User">
+        <id property="id" column="id"/>
+        <result property="avatar" column="avatar"/>
+        <result property="createTime" column="create_time"/>
+        <result property="email" column="email"/>
+        <result property="nickname" column="nickname"/>
+        <result property="password" column="password"/>
+        <result property="type" column="type"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="username" column="username"/>
+    </resultMap>
+
+    <select id="findUserByBlogId" resultMap="userMap">
+        select * from t_user user,t_blog blog where
+        user.id = blog.user_id and blog.id = #{blogId}
+    </select>
+</mapper>

@@ -2,16 +2,21 @@ package com.cdt.blog.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.cdt.blog.dao.ArticleMapper;
-import com.cdt.blog.model.entity.ArticlePO;
-import com.cdt.blog.model.vo.ArticleVO;
+import com.cdt.blog.dao.BlogMapper;
+import com.cdt.blog.dao.BlogTagsMapper;
+import com.cdt.blog.dao.TagMapper;
+import com.cdt.blog.model.entity.Blog;
+import com.cdt.blog.model.entity.Tag;
+import com.cdt.blog.model.vo.BlogVO;
 import com.cdt.blog.model.vo.PageVO;
 import com.cdt.blog.service.TagService;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.stream.Collectors;
 
 /**
@@ -24,33 +29,43 @@ import java.util.stream.Collectors;
 public class TagServiceImpl implements TagService {
 
     @Autowired
-    private ArticleMapper articleMapper;
+    private BlogMapper blogMapper;
+
+    @Autowired
+    private TagMapper tagMapper;
+
+    @Autowired
+    private BlogTagsMapper blogTagsMapper;
 
     @Override
-    public Set<String> getAllTags() {
-        QueryWrapper<ArticlePO> wrapper = new QueryWrapper<>();
-        wrapper.select("tags");
-        List<ArticlePO> articlePOS = this.articleMapper.selectList(wrapper);
-        Set<String> tags = articlePOS.stream().map(ArticlePO::getTags)
-                .flatMap(s -> Arrays.stream(s.split(",")))
-                .collect(Collectors.toSet());
+    public List<Tag> getAllTags() {
+        List<Tag> tags = this.tagMapper.selectList(null);
         log.info("tags: {}", tags);
-        return tags.isEmpty() ? new HashSet<>() : tags;
+        return tags.isEmpty() ? new ArrayList<>() : tags;
     }
 
     @Override
-    public PageVO<ArticleVO> getArticleByTag(String tagName, Integer page, Integer limit) {
-        QueryWrapper<ArticlePO> wrapper = new QueryWrapper<>();
-        wrapper.select(ArticlePO.class, i -> !"content".equals(i.getColumn())).like("tags", tagName);
-        Page<ArticlePO> articlePOPage = this.articleMapper.selectPage(new Page<>(page, limit), wrapper);
-        List<ArticleVO> articleVOS = articlePOPage.getRecords().stream().
-                map(ArticleVO::fromArticlePO).collect(Collectors.toList());
-        PageVO<ArticleVO> pageVO = PageVO.<ArticleVO>builder()
-                .records(articleVOS.isEmpty() ? new ArrayList<>() : articleVOS)
-                .total(articlePOPage.getTotal())
-                .size(articlePOPage.getSize())
-                .current(articlePOPage.getCurrent())
+    public PageVO<BlogVO> getBlogByTag(String tagName, Integer page, Integer limit) {
+        QueryWrapper<Tag> qw = new QueryWrapper<>();
+        qw.like("name", tagName);
+        Page<Blog> blogPage = this.blogMapper.findBlogByTag(new Page<>(page, limit), qw);
+        List<BlogVO> blogVOS = blogPage.getRecords().stream().
+                map(BlogVO::fromBlogPO).collect(Collectors.toList());
+        PageVO<BlogVO> pageVO = PageVO.<BlogVO>builder()
+                .records(blogVOS.isEmpty() ? new ArrayList<>() : blogVOS)
+                .total(blogPage.getTotal())
+                .size(blogPage.getSize())
+                .current(blogPage.getCurrent())
                 .build();
         return pageVO;
+    }
+
+    @Override
+    public List<Tag> getTagByTagName(String tagName) {
+        QueryWrapper<Tag> qw = new QueryWrapper<>();
+        if (StringUtils.isNotEmpty(tagName)) {
+            qw.like("name", tagName);
+        }
+        return this.tagMapper.selectList(qw);
     }
 }

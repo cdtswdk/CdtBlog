@@ -3,7 +3,7 @@ package com.cdt.blog.controller;
 import cn.hutool.core.map.MapUtil;
 import com.cdt.blog.model.comm.Results;
 import com.cdt.blog.model.dto.UserDTO;
-import com.cdt.blog.service.UserServiceImpl;
+import com.cdt.blog.service.impl.UserServiceImpl;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;

@@ -1,9 +1,10 @@
 package com.cdt.blog.service;
 
-import com.cdt.blog.model.vo.ArticleVO;
+import com.cdt.blog.model.entity.Tag;
+import com.cdt.blog.model.vo.BlogVO;
 import com.cdt.blog.model.vo.PageVO;
 
-import java.util.Set;
+import java.util.List;
 
 /**
  * @Auther: chendongtao
@@ -12,7 +13,9 @@ import java.util.Set;
  */
 public interface TagService {
 
-    Set<String> getAllTags();
+    List<Tag> getAllTags();
 
-    PageVO<ArticleVO> getArticleByTag(String tagName, Integer page, Integer limit);
+    PageVO<BlogVO> getBlogByTag(String tagName, Integer page, Integer limit);
+
+    List<Tag> getTagByTagName(String tagName);
 }
